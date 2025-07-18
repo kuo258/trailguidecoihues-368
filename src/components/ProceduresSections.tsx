@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ClipboardList } from 'lucide-react';
 import { SectionHeader } from './common/SectionHeader';
 import { ProceduresTabs } from './ProceduresTabs';
@@ -21,6 +21,30 @@ export function ProceduresSections({ section, language }: ProceduresSectionsProp
   const [procedureData, setProcedureData] = useState(null);
   const [ocrData, setOcrData] = useState<any>(null);
   const [formInputMethod, setFormInputMethod] = useState<'manual' | 'ocr'>('manual');
+
+  // Écouter l'événement pour ouvrir le formulaire en mode OCR
+  useEffect(() => {
+    const handleOpenProcedureFormOCR = () => {
+      console.log('Ouverture du formulaire de procédure en mode OCR');
+      setFormInputMethod('ocr');
+      setShowAddForm(true);
+    };
+
+    const handleNavigateWithOCR = (event: CustomEvent) => {
+      console.log('🎯 [ProceduresSections] Réception événement OCR:', event.detail);
+      setOcrData(event.detail.ocrData);
+      setFormInputMethod('ocr');
+      setShowAddForm(true);
+    };
+
+    window.addEventListener('open-procedure-form-with-ocr', handleOpenProcedureFormOCR);
+    window.addEventListener('navigate-to-procedure-form-with-ocr', handleNavigateWithOCR as EventListener);
+    
+    return () => {
+      window.removeEventListener('open-procedure-form-with-ocr', handleOpenProcedureFormOCR);
+      window.removeEventListener('navigate-to-procedure-form-with-ocr', handleNavigateWithOCR as EventListener);
+    };
+  }, []);
 
   const handleOCRDataExtracted = (data: { documentType: 'legal' | 'procedure', formData: Record<string, any> }) => {
     console.log('🎯 [ProceduresSections] Données OCR reçues:', data);

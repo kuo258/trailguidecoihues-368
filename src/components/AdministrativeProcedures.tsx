@@ -79,8 +79,6 @@ export function AdministrativeProcedures() {
     setShowApprovalQueue(false);
   };
 
-  const [formInputMethod, setFormInputMethod] = useState<'manual' | 'ocr'>('manual');
-
   // Écouter l'événement de navigation avec données OCR
   useEffect(() => {
     const handleNavigateWithOCR = (event: CustomEvent) => {
@@ -89,18 +87,10 @@ export function AdministrativeProcedures() {
       setCurrentView('form');
     };
 
-    const handleOpenOCRForm = () => {
-      console.log('🎯 [AdministrativeProcedures] Ouverture formulaire avec mode OCR');
-      setFormInputMethod('ocr');
-      setCurrentView('form');
-    };
-
     window.addEventListener('navigate-to-procedure-form-with-ocr', handleNavigateWithOCR as EventListener);
-    window.addEventListener('open-procedure-form-with-ocr', handleOpenOCRForm);
     
     return () => {
       window.removeEventListener('navigate-to-procedure-form-with-ocr', handleNavigateWithOCR as EventListener);
-      window.removeEventListener('open-procedure-form-with-ocr', handleOpenOCRForm);
     };
   }, []);
 
@@ -110,11 +100,9 @@ export function AdministrativeProcedures() {
         onBack={() => {
           setCurrentView('list');
           setOcrData(null);
-          setFormInputMethod('manual');
         }}
         onSubmit={handleProcedureSubmit}
         ocrData={ocrData}
-        initialInputMethod={formInputMethod}
       />
     );
   }
@@ -142,10 +130,7 @@ export function AdministrativeProcedures() {
       
       <ProceduresTabs 
         section="procedures-catalog" 
-        onAddProcedure={() => {
-          setFormInputMethod('manual');
-          setCurrentView('form');
-        }}
+        onAddProcedure={() => setCurrentView('form')}
         onOpenApprovalQueue={handleOpenApprovalQueue}
         onOCRDataExtracted={handleOCRDataExtracted}
       />
