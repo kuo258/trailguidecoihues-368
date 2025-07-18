@@ -27,8 +27,13 @@ export function LegalTextsEnrichmentTab({ onAddLegalText, onOCRTextExtracted, on
   };
 
   const handleScanOCRClick = () => {
-    console.log('🎯 [LegalTextsEnrichmentTab] Clic sur Scanner OCR');
-    setShowOCRScanner(true);
+    console.log('🎯 [LegalTextsEnrichmentTab] Redirection vers onglet Insertion OCR');
+    // Redirection vers l'onglet Insertion OCR du formulaire
+    const event = new CustomEvent('open-legal-form-with-ocr', {
+      detail: { openOCRTab: true }
+    });
+    window.dispatchEvent(event);
+    onAddLegalText();
   };
 
   const handleSmartOCRDataExtracted = (data: { documentType: 'legal' | 'procedure', formData: Record<string, any> }) => {

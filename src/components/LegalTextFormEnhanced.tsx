@@ -37,6 +37,19 @@ export function LegalTextFormEnhanced({
   const [selectedForm, setSelectedForm] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
 
+  // Écouter l'événement pour ouvrir directement l'onglet OCR
+  useEffect(() => {
+    const handleOpenOCRTab = (event: CustomEvent) => {
+      console.log('🎯 [LegalTextFormEnhanced] Ouverture directe onglet OCR');
+      setInputMethod('ocr');
+    };
+
+    window.addEventListener('open-legal-form-with-ocr', handleOpenOCRTab as EventListener);
+    return () => {
+      window.removeEventListener('open-legal-form-with-ocr', handleOpenOCRTab as EventListener);
+    };
+  }, []);
+
   // Filtrer les formulaires de la bibliothèque pour les textes juridiques
   const LEGAL_TEXT_TYPES = [
     'Loi', 'Décret', 'Arrêté', 'Ordonnance', 'Circulaire', 'Instruction', 

@@ -74,9 +74,16 @@ export function ProcedureForm({ onClose, onSubmit, ocrData, initialInputMethod =
       setInputMethod('ocr');
     };
 
+    const handleOpenOCRTab = (event: CustomEvent) => {
+      console.log('🎯 [ProcedureForm] Ouverture directe onglet OCR');
+      setInputMethod('ocr');
+    };
+
     window.addEventListener('activate-ocr-tab', handleActivateOCRTab);
+    window.addEventListener('open-procedure-form-with-ocr', handleOpenOCRTab as EventListener);
     return () => {
       window.removeEventListener('activate-ocr-tab', handleActivateOCRTab);
+      window.removeEventListener('open-procedure-form-with-ocr', handleOpenOCRTab as EventListener);
     };
   }, []);
 
