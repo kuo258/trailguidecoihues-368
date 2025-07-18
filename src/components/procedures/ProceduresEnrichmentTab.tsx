@@ -41,12 +41,9 @@ export function ProceduresEnrichmentTab({ onAddProcedure, onOCRTextExtracted, on
 
   const handleScanOCRClick = () => {
     console.log('🎯 [ProceduresEnrichmentTab] Redirection vers onglet Insertion OCR');
-    // Redirection vers l'onglet Insertion OCR du formulaire
-    const event = new CustomEvent('open-procedure-form-with-ocr', {
-      detail: { openOCRTab: true }
-    });
+    // Déclencher l'ouverture du formulaire avec mode OCR
+    const event = new CustomEvent('open-procedure-form-with-ocr');
     window.dispatchEvent(event);
-    onAddProcedure();
   };
 
   if (showOCRScanner) {
